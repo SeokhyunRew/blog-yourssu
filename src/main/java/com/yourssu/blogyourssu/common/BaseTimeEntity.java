@@ -17,10 +17,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class) //자동 시간 매핑
 public abstract class BaseTimeEntity {
     @CreatedDate
-    private LocalDateTime createAt;
+    private LocalDateTime create_at;
 
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updated_at;
 
 
 }
