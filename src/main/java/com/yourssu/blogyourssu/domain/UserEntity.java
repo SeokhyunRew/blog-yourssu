@@ -39,12 +39,4 @@ public class UserEntity extends BaseTimeEntity {
 
     @NotBlank
     private String username;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
-
-    @ManyToOne
-    @JoinColumn(name = "article_id")
-    private ArticleEntity articleEntity;
 }
