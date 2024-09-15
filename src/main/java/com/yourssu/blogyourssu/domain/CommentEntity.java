@@ -40,4 +40,8 @@ public class CommentEntity extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "article_id")
     private ArticleEntity articleEntity;
+
+    public void update(String content){
+        this.content = content;
+    }
 }

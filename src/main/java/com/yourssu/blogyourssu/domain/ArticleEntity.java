@@ -40,4 +40,8 @@ public class ArticleEntity extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
 }
