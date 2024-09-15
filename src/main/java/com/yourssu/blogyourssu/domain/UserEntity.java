@@ -29,11 +29,14 @@ public class UserEntity extends BaseTimeEntity {
     private Long id;
 
     @NotBlank
+    @Column(unique = true)
     private String email;
 
     @NotBlank
     private String password;
 
     @NotBlank
+    @Column(unique = true)
     private String username;
+
 }
