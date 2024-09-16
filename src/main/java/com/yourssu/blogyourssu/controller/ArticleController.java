@@ -6,7 +6,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import com.yourssu.blogyourssu.dto.request.ArticleRequest;
 import com.yourssu.blogyourssu.dto.response.ArticleResponse;
-import com.yourssu.blogyourssu.dto.response.UserResponse;
 import com.yourssu.blogyourssu.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,20 +34,20 @@ public class ArticleController {
                 .body(articleResponse);
     }
 
-    @PutMapping(value="/article/{id}")
+    @PutMapping(value="/article/{articleId}")
     public ResponseEntity<ArticleResponse> updateArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
                                                          @RequestBody ArticleRequest request,
-                                                         @PathVariable Long id){
-        ArticleResponse articleResponse = articleService.updateArticle(id, userId, request );
+                                                         @PathVariable Long articleId){
+        ArticleResponse articleResponse = articleService.updateArticle(articleId, userId, request );
 
         return ResponseEntity
                 .status(CREATED)
                 .body(articleResponse);
     }
 
-    @DeleteMapping(value="/article/{id}")
+    @DeleteMapping(value="/article/{articleId}")
     public void deleteArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
-                                                         @PathVariable Long id){
-        articleService.deleteById(id, userId);
+                                                         @PathVariable Long articleId){
+        articleService.deleteById(articleId, userId);
     }
 }

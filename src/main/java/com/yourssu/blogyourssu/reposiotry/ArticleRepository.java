@@ -3,9 +3,14 @@ package com.yourssu.blogyourssu.reposiotry;/*
  */
 
 import com.yourssu.blogyourssu.domain.ArticleEntity;
-import com.yourssu.blogyourssu.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
-    void deleteByUserEntity(UserEntity userEntity);
+    @Modifying
+    @Query(value = "DELETE FROM article_entity WHERE user_id = :userId", nativeQuery = true)
+    void deleteByUserId(@Param("userId") Long userId);
+
 }
