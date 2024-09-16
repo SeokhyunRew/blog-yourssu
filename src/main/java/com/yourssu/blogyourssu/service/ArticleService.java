@@ -8,6 +8,7 @@ import com.yourssu.blogyourssu.dto.request.ArticleRequest;
 import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.dto.util.ArticleDtoUtil;
 import com.yourssu.blogyourssu.reposiotry.ArticleRepository;
+import com.yourssu.blogyourssu.reposiotry.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleSearchService articleSearchService;
-    private  final UserSearchService userSearchService;
+    private final UserSearchService userSearchService;
+    private final CommentRepository commentRepository;
 
     public ArticleResponse createArticle(ArticleRequest request, Long userId){
         UserEntity user = userSearchService.findById(userId);
@@ -45,6 +47,8 @@ public class ArticleService {
         if (!findArticle.getUserEntity().getId().equals(userId)) {
             throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
         }
+
+        commentRepository.deleteByArticleId(articleId);
         articleRepository.deleteById(articleId);
     }
 }
