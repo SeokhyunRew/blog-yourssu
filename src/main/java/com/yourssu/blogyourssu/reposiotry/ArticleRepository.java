@@ -3,9 +3,9 @@ package com.yourssu.blogyourssu.reposiotry;/*
  */
 
 import com.yourssu.blogyourssu.domain.ArticleEntity;
+import com.yourssu.blogyourssu.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
-
-
+    void deleteByUserEntity(UserEntity userEntity);
 }
