@@ -30,13 +30,13 @@ public class UserService {
         return UserDtoUtil.userToUserResponse(saveUser);
     }
 
-    public void delete(UserEntity userEntity){
-        UserEntity findUser = userSearchService.findById(userEntity.getId());
+    public void delete(Long userId){
+        UserEntity findUser = userSearchService.findById(userId);
 
-        if (!findUser.getId().equals(userEntity.getId())) {
+        if (!findUser.getId().equals(userId)) {
             throw new IllegalArgumentException("본인만 회원탈퇴 가능합니다.");
         }
 
-        userRepository.deleteById(userEntity.getId());
+        userRepository.deleteById(userId);
     }
 }
