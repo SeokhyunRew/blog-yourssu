@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: blog-yourssu
+
+  jwt:
+    secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/yourssu_db?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul

@@ -4,7 +4,6 @@ package com.yourssu.blogyourssu.controller;/*
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-import com.yourssu.blogyourssu.domain.UserEntity;
 import com.yourssu.blogyourssu.dto.request.UserRequest;
 import com.yourssu.blogyourssu.dto.response.UserResponse;
 import com.yourssu.blogyourssu.service.UserService;
@@ -33,8 +32,8 @@ public class UserController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal UserEntity userEntity) {
-        userService.delete(userEntity);
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal(expression = "userId")Long userId) {
+        userService.delete(userId);
 
         return ResponseEntity
                 .noContent()
