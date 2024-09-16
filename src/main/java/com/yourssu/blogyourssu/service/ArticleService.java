@@ -9,7 +9,6 @@ import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.dto.util.ArticleDtoUtil;
 import com.yourssu.blogyourssu.reposiotry.ArticleRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleSearchService articleSearchService;
+    private  final UserSearchService userSearchService;
 
-
-    public ArticleResponse createArticle(ArticleRequest request, UserEntity userEntity){
-        ArticleEntity saveArticle = articleRepository.save(request.toEntity(userEntity));
+    public ArticleResponse createArticle(ArticleRequest request, Long userId){
+        UserEntity user = userSearchService.findById(userId);
+        ArticleEntity saveArticle = articleRepository.save(request.toEntity(user));
 
         return ArticleDtoUtil.articleToArticleResponse(saveArticle) ;
     }
 
-    public ArticleResponse updateArticle(Long articleId, UserEntity userEntity, ArticleRequest request){
+    public ArticleResponse updateArticle(Long articleId, Long userId, ArticleRequest request){
         ArticleEntity findArticle = articleSearchService.findById(articleId);
 
-        if (!findArticle.getUserEntity().getId().equals(userEntity.getId())) {
+        if (!findArticle.getUserEntity().getId().equals(userId)) {
             throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
 
@@ -39,10 +39,10 @@ public class ArticleService {
         return ArticleDtoUtil.articleToArticleResponse(findArticle);
     }
 
-    public void deleteById(Long articleId, UserEntity userEntity){
+    public void deleteById(Long articleId, Long userId){
         ArticleEntity findArticle = articleSearchService.findById(articleId);
 
-        if (!findArticle.getUserEntity().getId().equals(userEntity.getId())) {
+        if (!findArticle.getUserEntity().getId().equals(userId)) {
             throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
         }
         articleRepository.deleteById(articleId);
