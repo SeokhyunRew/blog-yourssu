@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Getter
 public class CommentRequest {
     String content;
