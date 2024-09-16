@@ -9,6 +9,7 @@ import com.yourssu.blogyourssu.dto.response.UserResponse;
 import com.yourssu.blogyourssu.dto.util.UserDtoUtil;
 import com.yourssu.blogyourssu.reposiotry.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,20 +20,23 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserSearchService userSearchService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse createAccount(UserRequest request){
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        request.setPassword(encodedPassword);
         UserEntity saveUser = userRepository.save(request.toEntity());
 
         return UserDtoUtil.userToUserResponse(saveUser);
     }
 
-    public void deleteById(Long userId){
-        UserEntity findUser = userSearchService.findById(userId);
+    public void delete(UserEntity userEntity){
+        UserEntity findUser = userSearchService.findById(userEntity.getId());
 
-        if (!findUser.getId().equals(userId)) {
+        if (!findUser.getId().equals(userEntity.getId())) {
             throw new IllegalArgumentException("본인만 회원탈퇴 가능합니다.");
         }
 
-        userRepository.deleteById(userId);
+        userRepository.deleteById(userEntity.getId());
     }
 }
