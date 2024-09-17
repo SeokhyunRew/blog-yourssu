@@ -42,6 +42,10 @@ public class CustomUserDetails implements UserDetails {
 
         return userEntity.getUsername();
     }
+    public String getEmail() {
+
+        return userEntity.getEmail();
+    }
 
     // userId Getter 추가
     public Long getUserId() {
