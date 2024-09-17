@@ -1,6 +1,6 @@
 package com.yourssu.blogyourssu.jwt;/*
  * created by seokhyun on 2024-09-16.
- */
+*/
 
 import com.yourssu.blogyourssu.domain.UserEntity;
 import com.yourssu.blogyourssu.reposiotry.UserRepository;
@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         //DB에서 조회
-        UserEntity userData = userRepository.findByUsername(username);
+        UserEntity userData = userRepository.findByEmail(username);
 
         if (userData != null) {
 
