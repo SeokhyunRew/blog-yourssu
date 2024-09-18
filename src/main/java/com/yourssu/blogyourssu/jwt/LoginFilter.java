@@ -2,11 +2,15 @@ package com.yourssu.blogyourssu.jwt;/*
  * created by seokhyun on 2024-09-16.
  */
 
+import static com.yourssu.blogyourssu.jwt.ExceptionHandlerUtil.handleException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,10 +66,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("Authorization", "Bearer " + token);
     }
 
-    //로그인 실패시 실행하는 메소드
+    // 로그인 실패 시 실행하는 메소드
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
-        //로그인 실패시 401 응답 코드 반환
-        response.setStatus(401);
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        // 로그인 실패시 401 응답 코드 및 JSON 형식으로 응답
+        handleException(response, "아이디나 비밀번호 다시 체크해주세요!", HttpStatus.UNAUTHORIZED, request);
     }
 }
