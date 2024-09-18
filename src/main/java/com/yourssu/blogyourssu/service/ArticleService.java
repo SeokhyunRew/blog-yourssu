@@ -11,7 +11,6 @@ import com.yourssu.blogyourssu.dto.util.ArticleDtoUtil;
 import com.yourssu.blogyourssu.reposiotry.ArticleRepository;
 import com.yourssu.blogyourssu.reposiotry.CommentRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +25,7 @@ public class ArticleService {
 
     public ArticleResponse createArticle(ArticleRequest request, Long userId){
         UserEntity user = userSearchService.findById(userId);
-        ArticleEntity saveArticle;
-        try {
-            saveArticle = articleRepository.save(request.toEntity(user));
-        } catch (ConstraintViolationException e) {
-            throw e; // 혹은 새로 커스텀한 예외를 던질 수 있습니다.
-        }
+        ArticleEntity saveArticle = articleRepository.save(request.toEntity(user));;
 
         return ArticleDtoUtil.articleToArticleResponse(saveArticle) ;
     }
