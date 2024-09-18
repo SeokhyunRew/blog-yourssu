@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import com.yourssu.blogyourssu.dto.request.ArticleRequest;
 import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.service.ArticleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +27,7 @@ public class ArticleController {
 
     @PostMapping(value="/article")
     public ResponseEntity<ArticleResponse> createArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
-                                                         @RequestBody ArticleRequest request){
+                                                         @RequestBody @Valid ArticleRequest request){
         ArticleResponse articleResponse = articleService.createArticle(request,userId );
 
         return ResponseEntity
@@ -36,7 +37,7 @@ public class ArticleController {
 
     @PutMapping(value="/article/{articleId}")
     public ResponseEntity<ArticleResponse> updateArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
-                                                         @RequestBody ArticleRequest request,
+                                                         @RequestBody @Valid ArticleRequest request,
                                                          @PathVariable Long articleId){
         ArticleResponse articleResponse = articleService.updateArticle(articleId, userId, request );
 

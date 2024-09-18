@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import com.yourssu.blogyourssu.dto.request.UserRequest;
 import com.yourssu.blogyourssu.dto.response.UserResponse;
 import com.yourssu.blogyourssu.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value="/all/users")
-    public ResponseEntity<UserResponse> createAccount(@RequestBody UserRequest request){
+    public ResponseEntity<UserResponse> createAccount(@RequestBody @Valid UserRequest request){
         UserResponse userResponse = userService.createAccount(request);
 
         return ResponseEntity
