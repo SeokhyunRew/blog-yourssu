@@ -2,6 +2,7 @@ package com.yourssu.blogyourssu.service;/*
  * created by seokhyun on 2024-09-15.
  */
 
+import com.yourssu.blogyourssu.common.exception.customexception.ForbiddenException;
 import com.yourssu.blogyourssu.domain.ArticleEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
 import com.yourssu.blogyourssu.dto.request.ArticleRequest;
@@ -10,6 +11,7 @@ import com.yourssu.blogyourssu.dto.util.ArticleDtoUtil;
 import com.yourssu.blogyourssu.reposiotry.ArticleRepository;
 import com.yourssu.blogyourssu.reposiotry.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,12 @@ public class ArticleService {
 
     public ArticleResponse createArticle(ArticleRequest request, Long userId){
         UserEntity user = userSearchService.findById(userId);
-        ArticleEntity saveArticle = articleRepository.save(request.toEntity(user));
+        ArticleEntity saveArticle;
+        try {
+            saveArticle = articleRepository.save(request.toEntity(user));
+        } catch (ConstraintViolationException e) {
+            throw e; // 혹은 새로 커스텀한 예외를 던질 수 있습니다.
+        }
 
         return ArticleDtoUtil.articleToArticleResponse(saveArticle) ;
     }
@@ -33,7 +40,7 @@ public class ArticleService {
         ArticleEntity findArticle = articleSearchService.findById(articleId);
 
         if (!findArticle.getUserEntity().getId().equals(userId)) {
-            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+            throw new ForbiddenException("작성자만 수정 가능합니다.");
         }
 
         findArticle.update(request.getTitle(), request.getContent());
@@ -45,7 +52,7 @@ public class ArticleService {
         ArticleEntity findArticle = articleSearchService.findById(articleId);
 
         if (!findArticle.getUserEntity().getId().equals(userId)) {
-            throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
+            throw new ForbiddenException("작성자만 삭제 가능합니다.");
         }
 
         commentRepository.deleteByArticleId(articleId);

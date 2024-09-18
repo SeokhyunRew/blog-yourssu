@@ -2,6 +2,7 @@ package com.yourssu.blogyourssu.service;/*
  * created by seokhyun on 2024-09-15.
  */
 
+import com.yourssu.blogyourssu.common.exception.customexception.ForbiddenException;
 import com.yourssu.blogyourssu.domain.ArticleEntity;
 import com.yourssu.blogyourssu.domain.CommentEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
@@ -36,7 +37,7 @@ public class CommentService {
         CommentEntity findComment = commentSearchService.findById(commentId);
 
         if (!findComment.getUserEntity().getId().equals(userId)) {
-            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+            throw new ForbiddenException("작성자만 수정 가능합니다.");
         }
 
         findComment.update(request.getContent());
@@ -48,7 +49,7 @@ public class CommentService {
         CommentEntity findComment = commentSearchService.findById(commentId);
 
         if (!findComment.getUserEntity().getId().equals(userId)) {
-            throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
+            throw new ForbiddenException("작성자만 삭제 가능합니다.");
         }
 
         commentRepository.deleteById(commentId);
