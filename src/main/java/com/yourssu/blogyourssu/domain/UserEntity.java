@@ -36,7 +36,6 @@ public class UserEntity extends BaseTimeEntity {
     private String password;
 
     @NotBlank
-    @Column(unique = true)
     private String username;
 
     private String role;
