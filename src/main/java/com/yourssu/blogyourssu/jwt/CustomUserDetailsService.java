@@ -7,7 +7,6 @@ import com.yourssu.blogyourssu.domain.UserEntity;
 import com.yourssu.blogyourssu.reposiotry.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

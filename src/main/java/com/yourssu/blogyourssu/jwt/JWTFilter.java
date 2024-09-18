@@ -2,6 +2,7 @@ package com.yourssu.blogyourssu.jwt;/*
  * created by seokhyun on 2024-09-16.
  */
 
+import static com.yourssu.blogyourssu.jwt.ExceptionHandlerUtil.handleException;
 import com.yourssu.blogyourssu.domain.UserEntity;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -11,8 +12,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -77,19 +76,4 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void handleException(HttpServletResponse response, String message, HttpStatus status, HttpServletRequest request) throws IOException {
-        response.setStatus(status.value());
-        response.setContentType("application/json; charset=UTF-8"); // Content-Type에 UTF-8 설정 추가
-        response.setCharacterEncoding("UTF-8"); // UTF-8 인코딩 설정
-
-        String jsonResponse = String.format(
-                "{\"time\": \"%s\", \"status\": %s, \"message\": \"%s\", \"requestURI\": \"%s\"}",
-                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                "\"" + status.name() + "\"",
-                message,
-                request.getRequestURI()
-        );
-
-        response.getWriter().write(jsonResponse);
-    }
 }
