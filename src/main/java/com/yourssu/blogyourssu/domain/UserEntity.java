@@ -2,7 +2,7 @@ package com.yourssu.blogyourssu.domain;/*
  * created by seokhyun on 2024-09-14.
  */
 
-import com.yourssu.blogyourssu.common.BaseTimeEntity;
+import com.yourssu.blogyourssu.common.base.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +36,6 @@ public class UserEntity extends BaseTimeEntity {
     private String password;
 
     @NotBlank
-    @Column(unique = true)
     private String username;
 
     private String role;

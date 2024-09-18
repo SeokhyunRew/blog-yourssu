@@ -3,6 +3,8 @@ package com.yourssu.blogyourssu.config;/*
  */
 
 //-------------------------------------Spring Security 6.x 버전부터 변경 사항  >> 기존에 arguments(인수)로 입력받던 방식을 FunctionalInterface로 입력받도록 변경--------------
+import com.yourssu.blogyourssu.common.exception.securityexception.CustomAccessDeniedHandler;
+import com.yourssu.blogyourssu.common.exception.securityexception.CustomAuthenticationEntryPoint;
 import com.yourssu.blogyourssu.jwt.JWTFilter;
 import com.yourssu.blogyourssu.jwt.JWTUtil;
 import com.yourssu.blogyourssu.jwt.LoginFilter;
@@ -28,6 +30,8 @@ public class SecurityConfig {
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint; // Custom EntryPoint 추가
+    private final CustomAccessDeniedHandler customAccessDeniedHandler; // Custom AccessDeniedHandler 추가
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -62,7 +66,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/all/*").permitAll()
+                        .requestMatchers("/api/all/*", "/error").permitAll()
                         .anyRequest().authenticated());
 
         //JWTFilter 등록
@@ -77,6 +81,14 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // 예외 처리 설정
+        http
+                .exceptionHandling((exceptions) -> exceptions
+                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증 문제 발생 시 예외 처리
+                        .accessDeniedHandler(customAccessDeniedHandler) // 권한 문제 발생 시 예외 처리
+                );
+
 
         return http.build();
     }

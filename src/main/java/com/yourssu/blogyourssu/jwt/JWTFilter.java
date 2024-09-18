@@ -2,12 +2,17 @@ package com.yourssu.blogyourssu.jwt;/*
  * created by seokhyun on 2024-09-16.
  */
 
+import static com.yourssu.blogyourssu.jwt.ExceptionHandlerUtil.handleException;
 import com.yourssu.blogyourssu.domain.UserEntity;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,61 +23,57 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
 
     public JWTFilter(JWTUtil jwtUtil) {
-
         this.jwtUtil = jwtUtil;
     }
 
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-        //request에서 Authorization 헤더를 찾음
-        String authorization= request.getHeader("Authorization");
+        String authorization = request.getHeader("Authorization");
 
-        //Authorization 헤더 검증
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
+        try {
+            if (authorization == null || !authorization.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-            System.out.println("token null");
-            filterChain.doFilter(request, response);
+            String token = authorization.split(" ")[1];
 
-            //조건이 해당되면 메소드 종료 (필수)
+            if (jwtUtil.isExpired(token)) {
+                handleException(response, "Token has expired", HttpStatus.UNAUTHORIZED, request);
+                return;
+            }
+
+            String email = jwtUtil.getEmail(token);
+            String role = jwtUtil.getRole(token);
+            Long userId = jwtUtil.getUserId(token);
+
+            UserEntity userEntity = new UserEntity();
+            userEntity.setEmail(email);
+            userEntity.setPassword("temppassword");
+            userEntity.setId(userId);
+            userEntity.setRole(role);
+
+            CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
+
+            Authentication authToken = new UsernamePasswordAuthenticationToken(
+                    customUserDetails, null, customUserDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        } catch (ExpiredJwtException ex) {
+            handleException(response, "토큰 유효기간이 만료됐습니다. 다시 로그인해서 재발급해주세요!", HttpStatus.UNAUTHORIZED, request);
+            return;
+        } catch (SignatureException | MalformedJwtException ex) {
+            handleException(response, "올바르지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED, request);
+            return;
+        } catch (Exception ex) {
+            handleException(response, "사용자 인증에 실패했습니다", HttpStatus.UNAUTHORIZED, request);
             return;
         }
-
-        System.out.println("authorization now");
-        //Bearer 부분 제거 후 순수 토큰만 획득
-        String token = authorization.split(" ")[1];
-
-        //토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(token)) {
-
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            return;
-        }
-
-        //토큰에서 email, role, userId 획득
-        String email = jwtUtil.getEmail(token);
-        String role = jwtUtil.getRole(token);
-        Long userId = jwtUtil.getUserId(token);
-
-        //userEntity를 생성하여 값 set
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(email);
-        userEntity.setPassword("temppassword");
-        userEntity.setId(userId);
-        userEntity.setRole(role);
-
-        //UserDetails에 회원 정보 객체 담기
-        CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
-
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-        //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
     }
+
 }

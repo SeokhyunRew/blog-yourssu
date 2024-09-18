@@ -7,9 +7,9 @@ package com.yourssu.blogyourssu.controller;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.yourssu.blogyourssu.dto.request.CommentRequest;
-import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.dto.response.CommentResponse;
 import com.yourssu.blogyourssu.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +29,7 @@ public class CommentController {
 
     @PostMapping(value="/article/{articleId}/comment")
     public ResponseEntity<CommentResponse> createComment(@AuthenticationPrincipal(expression = "userId")Long userId,
-                                                         @RequestBody CommentRequest request,
+                                                         @RequestBody @Valid CommentRequest request,
                                                          @PathVariable Long articleId){
         CommentResponse commentResponse = commentService.createComment(request, userId, articleId);
 
@@ -40,7 +40,7 @@ public class CommentController {
 
     @PutMapping(value="/comment/{commentId}")
     public ResponseEntity<CommentResponse> updateComment(@AuthenticationPrincipal(expression = "userId")Long userId,
-                                                         @RequestBody CommentRequest request,
+                                                         @RequestBody @Valid CommentRequest request,
                                                          @PathVariable Long commentId){
         CommentResponse commentResponse = commentService.updateComment(commentId, userId, request );
 
