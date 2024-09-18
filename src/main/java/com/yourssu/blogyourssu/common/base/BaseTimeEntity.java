@@ -1,4 +1,4 @@
-package com.yourssu.blogyourssu.common;/*
+package com.yourssu.blogyourssu.common.base;/*
  * created by seokhyun on 2024-09-14.
  */
 
