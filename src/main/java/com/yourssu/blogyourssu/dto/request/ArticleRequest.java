@@ -4,7 +4,6 @@ package com.yourssu.blogyourssu.dto.request;/*
 
 import com.yourssu.blogyourssu.domain.ArticleEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -7,7 +7,6 @@ import com.yourssu.blogyourssu.domain.CommentEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
 @Getter
