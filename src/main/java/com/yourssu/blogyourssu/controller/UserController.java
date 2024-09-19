@@ -3,7 +3,6 @@ package com.yourssu.blogyourssu.controller;/*
  */
 
 import static org.springframework.http.HttpStatus.CREATED;
-
 import com.yourssu.blogyourssu.dto.request.UserRequest;
 import com.yourssu.blogyourssu.dto.response.UserResponse;
 import com.yourssu.blogyourssu.service.UserService;

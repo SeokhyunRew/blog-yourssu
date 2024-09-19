@@ -5,7 +5,7 @@ package com.yourssu.blogyourssu.controller;
 
 
 import static org.springframework.http.HttpStatus.CREATED;
-
+import static org.springframework.http.HttpStatus.OK;
 import com.yourssu.blogyourssu.dto.request.CommentRequest;
 import com.yourssu.blogyourssu.dto.response.CommentResponse;
 import com.yourssu.blogyourssu.service.CommentService;
@@ -45,7 +45,7 @@ public class CommentController {
         CommentResponse commentResponse = commentService.updateComment(commentId, userId, request );
 
         return ResponseEntity
-                .status(CREATED)
+                .status(OK)
                 .body(commentResponse);
     }
 

@@ -3,7 +3,6 @@ package com.yourssu.blogyourssu.jwt;/*
  */
 
 import static com.yourssu.blogyourssu.jwt.ExceptionHandlerUtil.handleException;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -69,7 +68,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 실패 시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        // 로그인 실패시 401 응답 코드 및 JSON 형식으로 응답
+        // 로그인 실패시 예외처리
         handleException(response, "아이디나 비밀번호 다시 체크해주세요!", HttpStatus.UNAUTHORIZED, request);
     }
 }

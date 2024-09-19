@@ -3,7 +3,6 @@ package com.yourssu.blogyourssu.aop;/*
  */
 
 public enum LogLevel {
-
     INFO,
     ERROR
 }
