@@ -36,15 +36,6 @@ public class SetupDataUtils {
                 null);
     }
 
-    public static UserEntity makeCustomTestUser(Long id, String email, String password, String username, BCryptPasswordEncoder passwordEncoder) {
-        return new UserEntity(
-                id,
-                email,
-                passwordEncoder.encode(password),
-                username,
-                null);
-    }
-
     public static ArticleEntity makeTestArticle(UserEntity user) {
         return new ArticleEntity(
                 null,

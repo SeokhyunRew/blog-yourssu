@@ -2,13 +2,9 @@ package com.yourssu.blogyourssu.service;/*
  * created by seokhyun on 2024-09-19.
  */
 
-import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_ARTICLE_CONTENT;
-import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_ARTICLE_UPDATE_CONTENT;
 import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_COMMENT_CONTENT;
 import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_COMMENT_UPDATE_CONTENT;
 import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_LOGIN_EMAIL;
-import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_TITLE;
-import static com.yourssu.blogyourssu.testutil.SetupDataUtils.TEST_UPDATE_TITLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -16,9 +12,7 @@ import com.yourssu.blogyourssu.common.exception.customexception.NotFoundExceptio
 import com.yourssu.blogyourssu.domain.ArticleEntity;
 import com.yourssu.blogyourssu.domain.CommentEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
-import com.yourssu.blogyourssu.dto.request.ArticleRequest;
 import com.yourssu.blogyourssu.dto.request.CommentRequest;
-import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.dto.response.CommentResponse;
 import com.yourssu.blogyourssu.reposiotry.ArticleRepository;
 import com.yourssu.blogyourssu.reposiotry.CommentRepository;

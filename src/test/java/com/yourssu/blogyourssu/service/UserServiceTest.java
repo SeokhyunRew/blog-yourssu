@@ -92,36 +92,4 @@ public class UserServiceTest {
         // then
         assertThrows(NotFoundException.class, () -> userSearchService.findById(findUser.getId()));
     }
-
-
-    /*@Test
-    @DisplayName("회원가입 실패 테스트 - 중복된 이메일")
-    void createAccountWithDuplicateEmailTest() {
-        // given
-        UserRequest request = new UserRequest(TEST_LOGIN_EMAIL, TEST_PASSWORD, TEST_USERNAME);
-
-        // when
-        Exception exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> userService.createAccount(request)
-        );
-
-        // then
-        assertEquals("이미 사용 중인 이메일입니다.", exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("회원가입 실패 테스트 - 비밀번호 누락")
-    void createAccountWithMissingPasswordTest() {
-        // given
-        UserRequest request = new UserRequest(TEST_LOGIN_EMAIL + 2, "", TEST_USERNAME); // 비밀번호가 빈 값
-        UserEntity userEntity = request.toEntity();
-
-        // when
-        Set<ConstraintViolation<UserEntity>> violations = validator.validate(userEntity);
-
-        // then
-        assertFalse(violations.isEmpty()); // 검증 실패가 발생해야 함
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("비밀번호는 필수 입력 사항입니다.")));
-    }*/
 }
