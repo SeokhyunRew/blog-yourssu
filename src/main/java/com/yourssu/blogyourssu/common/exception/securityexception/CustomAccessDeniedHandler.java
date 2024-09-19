@@ -5,16 +5,17 @@ package com.yourssu.blogyourssu.common.exception.securityexception;/*
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.yourssu.blogyourssu.common.exception.GlobalExceptionHandler;
+import com.yourssu.blogyourssu.dto.response.ErrorResponse;
+import com.yourssu.blogyourssu.dto.util.ErrorUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.ServletWebRequest;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -34,13 +35,12 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType("application/json");
         response.setStatus(HttpStatus.FORBIDDEN.value());
 
-        // 에러 응답 구조 정의
-        GlobalExceptionHandler.ErrorResponse errorResponse = new GlobalExceptionHandler.ErrorResponse(
-                LocalDateTime.now(),
+        // ErrorUtil을 사용하여 에러 응답 생성
+        ErrorResponse errorResponse = ErrorUtil.buildErrorResponse(
+                accessDeniedException,
                 HttpStatus.FORBIDDEN,
-                accessDeniedException.getMessage(),
-                request.getRequestURI()
-        );
+                new ServletWebRequest(request)
+        ).getBody();
 
         // 응답에 JSON으로 에러 메시지 작성
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
