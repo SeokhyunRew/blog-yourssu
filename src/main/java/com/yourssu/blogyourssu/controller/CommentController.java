@@ -9,6 +9,7 @@ import static org.springframework.http.HttpStatus.OK;
 import com.yourssu.blogyourssu.dto.request.CommentRequest;
 import com.yourssu.blogyourssu.dto.response.CommentResponse;
 import com.yourssu.blogyourssu.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
     private final CommentService commentService;
 
+    @Operation(summary = "댓글 생성", description = "댓글 달고싶은 articleId 요청에 넣어야함, 헤더 Authorization에 토큰값 넣어야함")
     @PostMapping(value="/article/{articleId}/comment")
     public ResponseEntity<CommentResponse> createComment(@AuthenticationPrincipal(expression = "userId")Long userId,
                                                          @RequestBody @Valid CommentRequest request,
@@ -38,6 +40,7 @@ public class CommentController {
                 .body(commentResponse);
     }
 
+    @Operation(summary = "댓글 수정", description = "수정하고 싶은 댓글 commentId 요청에 넣어야함, 헤더 Authorization에 토큰값 넣어야함")
     @PutMapping(value="/comment/{commentId}")
     public ResponseEntity<CommentResponse> updateComment(@AuthenticationPrincipal(expression = "userId")Long userId,
                                                          @RequestBody @Valid CommentRequest request,
@@ -49,6 +52,7 @@ public class CommentController {
                 .body(commentResponse);
     }
 
+    @Operation(summary = "댓글 삭제", description = "삭제하고 싶은 댓글 commentId 요청에 넣어야함, 헤더 Authorization에 토큰값 넣어야함")
     @DeleteMapping(value="/comment/{commentId}")
     public void deleteComment(@AuthenticationPrincipal(expression = "userId")Long userId,
                               @PathVariable Long commentId){
