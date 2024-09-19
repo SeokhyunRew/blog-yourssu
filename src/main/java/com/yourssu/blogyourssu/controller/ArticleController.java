@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.OK;
 import com.yourssu.blogyourssu.dto.request.ArticleRequest;
 import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.service.ArticleService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController {
     private final ArticleService articleService;
 
+    @Operation(summary = "게시글 생성", description = "헤더 Authorization에 토큰값 넣어야함")
     @PostMapping(value="/article")
     public ResponseEntity<ArticleResponse> createArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
                                                          @RequestBody @Valid ArticleRequest request){
@@ -35,6 +37,7 @@ public class ArticleController {
                 .body(articleResponse);
     }
 
+    @Operation(summary = "게시글 수정", description = "수정할 게시글 articleId 요청에 넣어야함, 헤더 Authorization에 토큰값 넣어야함")
     @PutMapping(value="/article/{articleId}")
     public ResponseEntity<ArticleResponse> updateArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
                                                          @RequestBody @Valid ArticleRequest request,
@@ -46,6 +49,7 @@ public class ArticleController {
                 .body(articleResponse);
     }
 
+    @Operation(summary = "게시글 삭제", description = "삭제할 게시글 articleId 요청에 넣어야함, 헤더 Authorization에 토큰값 넣어야함")
     @DeleteMapping(value="/article/{articleId}")
     public void deleteArticle(@AuthenticationPrincipal(expression = "userId")Long userId,
                                                          @PathVariable Long articleId){
