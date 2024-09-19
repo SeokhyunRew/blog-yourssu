@@ -4,11 +4,13 @@ package com.yourssu.blogyourssu.dto.request;/*
 
 import com.yourssu.blogyourssu.domain.ArticleEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class ArticleRequest {
     private String title;
     private String content;

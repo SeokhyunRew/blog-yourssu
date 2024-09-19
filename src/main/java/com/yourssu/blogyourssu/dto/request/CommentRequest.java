@@ -5,11 +5,13 @@ package com.yourssu.blogyourssu.dto.request;/*
 import com.yourssu.blogyourssu.domain.ArticleEntity;
 import com.yourssu.blogyourssu.domain.CommentEntity;
 import com.yourssu.blogyourssu.domain.UserEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class CommentRequest {
     String content;
     public CommentEntity toEntity(ArticleEntity articleEntity, UserEntity userEntity){
