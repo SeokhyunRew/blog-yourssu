@@ -3,7 +3,7 @@ package com.yourssu.blogyourssu.controller;/*
  */
 
 import static org.springframework.http.HttpStatus.CREATED;
-
+import static org.springframework.http.HttpStatus.OK;
 import com.yourssu.blogyourssu.dto.request.ArticleRequest;
 import com.yourssu.blogyourssu.dto.response.ArticleResponse;
 import com.yourssu.blogyourssu.service.ArticleService;
@@ -42,7 +42,7 @@ public class ArticleController {
         ArticleResponse articleResponse = articleService.updateArticle(articleId, userId, request );
 
         return ResponseEntity
-                .status(CREATED)
+                .status(OK)
                 .body(articleResponse);
     }
 
