@@ -16,10 +16,13 @@ public class SetupDataUtils {
 
     // 테스트용 게시글 데이터 Input
     public static final String TEST_TITLE = "게시글 제목";
+    public static final String TEST_UPDATE_TITLE = "게시글 제목 수정";
     public static final String TEST_ARTICLE_CONTENT = "게시글 내용";
+    public static final String TEST_ARTICLE_UPDATE_CONTENT = "게시글 내용 수정";
 
     // 테스트용 댓글 데이터 Input
     public static final String TEST_COMMENT_CONTENT = "댓글 내용";
+    public static final String TEST_COMMENT_UPDATE_CONTENT = "댓글 내용";
 
     private SetupDataUtils() {
     }
@@ -42,20 +45,20 @@ public class SetupDataUtils {
                 null);
     }
 
-    public static ArticleEntity makeTestArticle() {
+    public static ArticleEntity makeTestArticle(UserEntity user) {
         return new ArticleEntity(
                 null,
                 TEST_TITLE,
                 TEST_ARTICLE_CONTENT,
-                null);
+                user);
     }
 
-    public static CommentEntity makeTestComment() {
+    public static CommentEntity makeTestComment(UserEntity user, ArticleEntity article) {
         return new CommentEntity(
                 null,
-                TEST_ARTICLE_CONTENT,
-                null,
-                null);
+                TEST_COMMENT_CONTENT,
+                user,
+                article);
     }
 
 }
